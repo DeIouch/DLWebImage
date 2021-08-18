@@ -21,7 +21,7 @@ class DLDownloadManage: NSObject {
     let fileManager : FileManager = FileManager.init()
     
     var cache : NSCache = NSCache<NSString, UIImage>.init()
-            
+                
     private override init() {
         super.init()
         fileManager.urls(for: .downloadsDirectory, in: .userDomainMask)
@@ -31,46 +31,64 @@ class DLDownloadManage: NSObject {
         return downloadManage
     }
     
-    func taskRun(downloader : DLDownloader?) {
-        let imageView = taskArray.first!
-        guard searchCacheImage(imageView: imageView) == false else {
-            taskArray.removeFirst()
-            if self.taskArray.count > 0 {
-                self.taskRun(downloader: nil)
-            }
-            return
-        }
-        guard searchRepetitiveDownload(imageV: imageView) == false else {
-            taskArray.removeFirst()
-            taskArray.append(imageView)
-            return
-        }
-        if downloadArray.count <= 4 {
-            let download = DLDownloader.init()
-            download.index = downloadArray.count
-            download.state = .finish
-            downloadArray.append(download)
-        }
-        var dlDownload : DLDownloader? = downloader
-        if dlDownload == nil {
-            dlDownload = searchFreeDownload()
-        }
-        if let download = dlDownload {
-            taskArray.removeFirst()
-            download.key = imageView.md5Key
-            download.download(urlStr: imageView.urlKey, filePath: filePath + imageView.md5Key, imageViewSize: imageView.frame.size, imageView: imageView, progress: nil, completion: { [weak self](image) in
-                download.state = .finish
-                download.key = ""
-                self?.downloadArray[download.index] = download
-                self?.cache.setObject(image, forKey: imageView.md5Key as NSString)
-                DispatchQueue.main.async {[weak self] in
-                    if self?.taskArray.count ?? 0 > 0 {
-                        self?.taskRun(downloader: download)
-                    }
-                    imageView.image = image
+    func taskRun() {
+        autoreleasepool {
+            let imageView = taskArray.first!
+            guard searchCacheImage(imageView: imageView) == false else {
+                taskArray.removeFirst()
+                if self.taskArray.count > 0 {
+                    self.taskRun()
                 }
-            })
-            download.resumeDown()
+                return
+            }
+            guard searchRepetitiveDownload(imageView: imageView) == false else {
+                taskArray.removeFirst()
+                taskArray.append(imageView)
+                return
+            }
+            if downloadArray.count <= 4 {
+                let download = DLDownloader.init()
+                download.index = downloadArray.count
+                download.state = .finish
+                downloadArray.append(download)
+            }
+            if let download = searchFreeDownload() {
+                taskArray.removeFirst()
+                download.download(imageView: imageView, size: imageView.frame.size, filePath: filePath + imageView.md5Key) { (progress) in
+                    
+                } completionBlock: { (image) in
+                    download.taskImageView = nil
+                    download.taskViewSize = .zero
+                    download.state = .finish
+                    self.downloadArray[download.index] = download
+                    DispatchQueue.main.async {[weak self] in
+                        if let images = image {
+                            self?.cache.setObject(images, forKey: (imageView.urlKey + "\(imageView.scaleType)").md5() as NSString)
+                            self?.setViewImage(view: imageView, image: images)
+                        }
+                        if self?.taskArray.count ?? 0 > 0 {
+                            self?.taskRun()
+                        }
+                    }
+                }
+                download.resumeDown()
+            }
+        }
+    }
+        
+    func setViewImage(view : UIView, image : UIImage) {
+        if view is UIImageView {
+            if let imageView : UIImageView = view as? UIImageView {
+                imageView.image = image
+            }
+        }else if view is UIButton {
+            if let btn : UIButton = view as? UIButton {
+                btn.setImage(image, for: .normal)
+            }
+        }else if view is UILabel {
+            if let lbl : UILabel = view as? UILabel {
+                lbl.backgroundColor = UIColor.init(patternImage: image)
+            }
         }
     }
     
@@ -85,14 +103,19 @@ class DLDownloadManage: NSObject {
         return download
     }
     
-    func addTask(urlStr : String, imageView : UIImageView) {
-        taskArray.append(imageView)
-        taskRun(downloader: nil)
+    func addTask(view : UIImageView) {
+        guard searchCacheImage(imageView: view) == false else {
+            return
+        }
+        taskArray.append(view)
+        if downloadArray.count <= 4 || searchFreeDownload() != nil{
+            taskRun()
+        }
     }
     
-    func searchRepetitiveDownload(imageV : UIImageView) -> Bool {
+    func searchRepetitiveDownload(imageView : UIImageView) -> Bool {
         for download in downloadArray {
-            if download.key == imageV.md5Key {
+            if download.taskImageView?.md5Key == imageView.md5Key {
                 return true
             }
         }
@@ -100,8 +123,8 @@ class DLDownloadManage: NSObject {
     }
     
     func searchCacheImage(imageView : UIImageView) -> Bool {
-        if let image = self.cache.object(forKey: imageView.md5Key as NSString) {
-            imageView.image = image
+        if let image = self.cache.object(forKey: (imageView.urlKey + "\(imageView.scaleType)").md5() as NSString) {
+            setViewImage(view: imageView, image: image)
             return true
         }
         return false

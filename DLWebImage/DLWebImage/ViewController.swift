@@ -7,41 +7,43 @@
 
 import UIKit
 
+let cellHeight : CGFloat = 200
+
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "cell") as? DLTableViewCell
-        if cell == nil {
-            cell = DLTableViewCell.init(style: .default, reuseIdentifier: "cell")
-        }
-        cell?.imageV.dl_imageView(url: dataSource[indexPath.row], placeholderImage: nil, failImage: UIImage.init(named: "liveSquare.png"), scaleType: .scaleAdaption)
-        return cell ?? DLTableViewCell.init()
+        let cell : DLTableViewCell = tableView.dequeueReusableCell(withIdentifier: "DLTableViewCell", for: indexPath) as! DLTableViewCell
+        let string = dataSource[indexPath.row]
+        cell.imageV.dl_setWebImage(url: string, placeholderImage: nil, failImage: UIImage.init(named: "liveSquare.png"), scaleType: .scaleAdaption)
+        return cell
     }
-    
-    var download = DLDownloader.init()
-    
-    var imageView = UIImageView.init(frame: CGRect.init(x: 0, y: 0, width: 300, height: 400))
-    
+        
     var tableView = UITableView.init()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(tableView)
         tableView.frame = self.view.bounds
-        tableView.rowHeight = 300
+        tableView.rowHeight = cellHeight
+        tableView.register(DLTableViewCell.self, forCellReuseIdentifier: "DLTableViewCell")
         tableView.delegate = self
         tableView.dataSource = self
         tableView.reloadData()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        imageView.dl_imageView(url: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fyouimg1.c-ctrip.com%2Ftarget%2Ftg%2F374%2F780%2F501%2F559858dc54b34a979c8816a8377fcf01.jpg&refer=http%3A%2F%2Fyouimg1.c-ctrip.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1631252918&t=4238fc8629da5d12dc1bf2dc35459e11")
-    }
+    var gifUrl = "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Ff.mgame.netease.com%2Fforum%2F201509%2F21%2F171337o26avxzpb6wpowza.gif&refer=http%3A%2F%2Ff.mgame.netease.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1631692465&t=a52a9396edae2a90eb8d697c7aedece3"
+    
+    lazy var imageView: UILabel = {
+        let imgV = UILabel.init(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
+        imgV.backgroundColor = .red
+        return imgV
+    }()
     
     var dataSource : [String] = [
+        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Ff.mgame.netease.com%2Fforum%2F201509%2F21%2F171337o26avxzpb6wpowza.gif&refer=http%3A%2F%2Ff.mgame.netease.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1631692465&t=a52a9396edae2a90eb8d697c7aedece3",
         "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fyouimg1.c-ctrip.com%2Ftarget%2Ftg%2F727%2F102%2F313%2F04dea7677ce3419cbd41ea0b6a3e1049.jpg&refer=http%3A%2F%2Fyouimg1.c-ctrip.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1631419814&t=c5eb489ce64e0660c185401a42b00cad",
         "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fyouimg1.c-ctrip.com%2Ftarget%2Ftg%2F374%2F780%2F501%2F559858dc54b34a979c8816a8377fcf01.jpg&refer=http%3A%2F%2Fyouimg1.c-ctrip.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1631419814&t=9434e70fdd1ec86c39bf36054c2dc876",
         "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fcdn.duitang.com%2Fuploads%2Fitem%2F201407%2F01%2F20140701142814_cAkaN.jpeg&refer=http%3A%2F%2Fcdn.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1631419814&t=28fd96e27cf152f83e40ef21ec04328c",

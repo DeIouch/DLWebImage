@@ -14,7 +14,7 @@ class DLTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(imageV)
-        imageV.frame = CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 300)
+        imageV.frame = CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: cellHeight)
         imageV.contentMode = .scaleAspectFit
     }
     
