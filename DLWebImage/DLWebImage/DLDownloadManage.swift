@@ -16,8 +16,15 @@ class DLDownloadManage: NSObject {
     
     var downloadArray : [DLDownloader] = []
     
+    var taskCount = 0
+    
     public static func shareInstance() -> DLDownloadManage {
         return downloadManage
+    }
+    
+    override init() {
+        super.init()
+        taskCount = getDeviceCpuCount() * 2
     }
     
     func taskRun() {
@@ -36,7 +43,7 @@ class DLDownloadManage: NSObject {
                 taskArray.append(task)
                 return
             }
-            if downloadArray.count <= 4 {
+            if downloadArray.count <= taskCount {
                 let download = DLDownloader.init()
                 download.index = downloadArray.count
                 download.state = .finish
@@ -44,9 +51,7 @@ class DLDownloadManage: NSObject {
             }
             if let download = searchFreeDownload() {
                 taskArray.removeFirst()
-                download.download(url: task.url, scaleType: task.scaleType, failImage : task.failImage, size: task.taskSize) { (progress) in
-                    
-                } completionBlock: { (image) in
+                download.download(url: task.url, scaleType: task.scaleType, size: task.taskSize, progressBlock: task.progressBlock) { (image) in
                     download.taskViewSize = .zero
                     download.state = .finish
                     self.downloadArray[download.index] = download
@@ -59,12 +64,26 @@ class DLDownloadManage: NSObject {
                             self?.taskRun()
                         }
                     }
-                } failBlock: { (image) in
-                    
+                } failBlock: {
+                    DispatchQueue.main.async {[weak self] in
+                        if let dataImage = task.failImage {
+                            self?.setViewImage(view: view, image: dataImage, state: task.state)
+                        }
+                    }
+                    task.failBlock?()
                 }
+
+                
                 download.resumeDown()
             }
         }
+    }
+    
+    private func getDeviceCpuCount() -> Int {
+        var ncpu: UInt = UInt(0)
+        var len: size_t = MemoryLayout.size(ofValue: ncpu)
+        sysctlbyname("hw.ncpu", &ncpu, &len, nil, 0)
+        return Int(ncpu)
     }
         
     func setViewImage(view : UIView?, image : UIImage, state : UIControl.State) {

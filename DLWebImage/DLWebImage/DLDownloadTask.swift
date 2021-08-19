@@ -29,6 +29,12 @@ class DLDownloadTask: NSObject {
     
     var spinner : UIActivityIndicatorView?
     
+    var progressBlock : ((_ progress : Float) ->())?
+    
+    var completionBlock : ((_ image : UIImage?) ->())?
+    
+    var failBlock : (() ->())?
+    
     func resume() {
         self.md5Key = self.url.md5()
         self.cacheKey = (self.url + "\(self.scaleType)").md5()
@@ -67,6 +73,19 @@ class DLDownloadTask: NSObject {
         return self
     }
     
+    func progressBlock(progressBlock : ((_ progress : Float) ->())?) -> DLDownloadTask {
+        self.progressBlock = progressBlock
+        return self
+    }
     
+    func completionBlock(completionBlock : ((_ image : UIImage?) ->())?) -> DLDownloadTask {
+        self.completionBlock = completionBlock
+        return self
+    }
+    
+    func failBlock(failBlock : (() ->())?) -> DLDownloadTask {
+        self.failBlock = failBlock
+        return self
+    }
     
 }

@@ -1,7 +1,7 @@
 
 import UIKit
 
-let cellHeight : CGFloat = 200
+let cellHeight : CGFloat = 40
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -11,7 +11,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell : DLTableViewCell = tableView.dequeueReusableCell(withIdentifier: "DLTableViewCell", for: indexPath) as! DLTableViewCell
         let string = dataSource[indexPath.row]
-        cell.imageV.dl_webImage.url(url: string).failImage(failImage: UIImage.init(named: "liveSquare.png")).scaleType(scaleType: .scaleOriginal).state(state: .highlighted).showLoading(showLoading: true).resume()
+        cell.imageV.dl_webImage.url(url: string).failImage(failImage: UIImage.init(named: "liveSquare.png")).scaleType(scaleType: .scaleOriginal).state(state: .highlighted).showLoading(showLoading: true).failBlock(failBlock: {
+            
+        }).resume()
         return cell
     }
         
