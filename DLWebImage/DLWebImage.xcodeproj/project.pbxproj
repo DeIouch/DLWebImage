@@ -22,10 +22,11 @@
 		26701AEA26CD205C004424B5 /* DLImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701ADC26CD205C004424B5 /* DLImage.swift */; };
 		26701AEB26CD205C004424B5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701ADD26CD205C004424B5 /* SceneDelegate.swift */; };
 		26701AED26CD205C004424B5 /* DLString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701ADF26CD205C004424B5 /* DLString.swift */; };
-		26701AEE26CD205C004424B5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701AE026CD205C004424B5 /* ViewController.swift */; };
+		26701AEE26CD205C004424B5 /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701AE026CD205C004424B5 /* ContentViewController.swift */; };
 		26701AEF26CD205C004424B5 /* DLTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701AE126CD205C004424B5 /* DLTableViewCell.swift */; };
 		26C4C79626C6763E00938490 /* liveSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 26C4C79526C6763E00938490 /* liveSquare.png */; };
 		26F1862B26CE40B400F8B566 /* DLDownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F1862A26CE40B400F8B566 /* DLDownloadTask.swift */; };
+		26F1863B26CE5C5500F8B566 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F1863A26CE5C5500F8B566 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,10 +68,11 @@
 		26701ADC26CD205C004424B5 /* DLImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLImage.swift; sourceTree = "<group>"; };
 		26701ADD26CD205C004424B5 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		26701ADF26CD205C004424B5 /* DLString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLString.swift; sourceTree = "<group>"; };
-		26701AE026CD205C004424B5 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		26701AE026CD205C004424B5 /* ContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
 		26701AE126CD205C004424B5 /* DLTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLTableViewCell.swift; sourceTree = "<group>"; };
 		26C4C79526C6763E00938490 /* liveSquare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = liveSquare.png; sourceTree = "<group>"; };
 		26F1862A26CE40B400F8B566 /* DLDownloadTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DLDownloadTask.swift; sourceTree = "<group>"; };
+		26F1863A26CE5C5500F8B566 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,7 +124,8 @@
 			isa = PBXGroup;
 			children = (
 				26701AD726CD205C004424B5 /* AppDelegate.swift */,
-				26701AE026CD205C004424B5 /* ViewController.swift */,
+				26701AE026CD205C004424B5 /* ContentViewController.swift */,
+				26F1863A26CE5C5500F8B566 /* ViewController.swift */,
 				26701AD626CD205C004424B5 /* DLData.swift */,
 				26701AD526CD205C004424B5 /* DLDownloadManage.swift */,
 				26701AD826CD205C004424B5 /* DLDownloader.swift */,
@@ -298,9 +301,10 @@
 				26701AE326CD205C004424B5 /* DLDownloadManage.swift in Sources */,
 				26701AE426CD205C004424B5 /* DLData.swift in Sources */,
 				26701AED26CD205C004424B5 /* DLString.swift in Sources */,
+				26F1863B26CE5C5500F8B566 /* ViewController.swift in Sources */,
 				26701AE726CD205C004424B5 /* DLWebImageView.swift in Sources */,
 				26701AEB26CD205C004424B5 /* SceneDelegate.swift in Sources */,
-				26701AEE26CD205C004424B5 /* ViewController.swift in Sources */,
+				26701AEE26CD205C004424B5 /* ContentViewController.swift in Sources */,
 				26701AEF26CD205C004424B5 /* DLTableViewCell.swift in Sources */,
 				26701AE626CD205C004424B5 /* DLDownloader.swift in Sources */,
 				26701AE826CD205C004424B5 /* DLImageCache.swift in Sources */,
