@@ -25,6 +25,10 @@ class DLDownloadTask: NSObject {
     
     var state : UIControl.State = .normal
     
+    var showLoading : Bool = false
+    
+    var spinner : UIActivityIndicatorView?
+    
     func resume() {
         self.md5Key = self.url.md5()
         self.cacheKey = (self.url + "\(self.scaleType)").md5()
@@ -33,6 +37,18 @@ class DLDownloadTask: NSObject {
     
     func url(url : String) -> DLDownloadTask {
         self.url = url
+        return self
+    }
+    
+    func showLoading(showLoading : Bool) -> DLDownloadTask {
+        self.showLoading = showLoading
+        if showLoading == true {
+            spinner = UIActivityIndicatorView.init(style: .large)
+            spinner?.startAnimating()
+            spinner?.center = CGPoint.init(x: self.taskSize.width * 0.5, y: self.taskSize.height * 0.5)
+            spinner?.color = .gray
+            self.taskView?.addSubview(spinner!)
+        }
         return self
     }
     

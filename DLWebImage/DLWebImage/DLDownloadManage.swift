@@ -44,13 +44,14 @@ class DLDownloadManage: NSObject {
             }
             if let download = searchFreeDownload() {
                 taskArray.removeFirst()
-                download.download(url: task.url, scaleType: task.scaleType, size: task.taskSize) { (progress) in
+                download.download(url: task.url, scaleType: task.scaleType, failImage : task.failImage, size: task.taskSize) { (progress) in
                     
                 } completionBlock: { (image) in
                     download.taskViewSize = .zero
                     download.state = .finish
                     self.downloadArray[download.index] = download
                     DispatchQueue.main.async {[weak self] in
+                        task.spinner?.stopAnimating()
                         if let dataImage = image {
                             self?.setViewImage(view: view, image: dataImage, state: task.state)
                         }
@@ -58,6 +59,8 @@ class DLDownloadManage: NSObject {
                             self?.taskRun()
                         }
                     }
+                } failBlock: { (image) in
+                    
                 }
                 download.resumeDown()
             }
@@ -110,6 +113,7 @@ class DLDownloadManage: NSObject {
     
     func searchCacheImage(task : DLDownloadTask) -> Bool {
         if let image = DLMemoryCache.shareInstance().object(forKey: task.cacheKey) {
+            task.spinner?.stopAnimating()
             setViewImage(view: task.taskView, image: image, state: task.state)
             return true
         }
