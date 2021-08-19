@@ -53,12 +53,21 @@ extension DLDownloader {
             DispatchQueue.global().async {
                 let data : NSData? = NSData.init(contentsOfFile: self.filePath)
                 if data?.getFileType() == .GIF {
+                    let image = data?.getImages()
+                    if let dataImage = image {
+                        DLMemoryCache.shareInstance().setObject(dataImage, forKey: imageView.md5Key + "\(imageView.scaleType)")
+                    }
                     completionBlock?(data?.getImages())
                 }else {
                     if let image = UIImage.init(contentsOfFile: self.filePath) {
-                        self.decodedImage(image: image) { (decodedImage)  in
-                            self.state = .finish
-                            completionBlock?(decodedImage)
+                        if let imageView = self.taskImageView {
+                            image.decodedImage(size: self.taskViewSize, scaleType: imageView.scaleType) { (decodedImage) in
+                                self.state = .finish
+                                if let dataImage = decodedImage {
+                                    DLMemoryCache.shareInstance().setObject(dataImage, forKey: imageView.md5Key + "\(imageView.scaleType)")
+                                }
+                                self.completionBlock?(decodedImage)
+                            }
                         }
                     }
                 }
@@ -78,44 +87,44 @@ extension DLDownloader {
         }
     }
     
-    func decodedImage(image : UIImage, completion: ((_ image : UIImage?) ->())?) {
-        autoreleasepool {
-            let cgImage = image.cgImage!
-            var width : CGFloat = CGFloat(cgImage.width)
-            var height : CGFloat = CGFloat(cgImage.height)
-            
-            if self.taskViewSize.width > 0 && self.taskViewSize.height > 0 {
-                switch self.taskImageView?.scaleType {
-                        case .scaleFill:
-                            if self.taskViewSize.width < CGFloat(width) || self.taskViewSize.height < CGFloat(height) {
-                                let scale = CGFloat(width) / self.taskViewSize.width < CGFloat(height) / self.taskViewSize.height ? CGFloat(width) / self.taskViewSize.width : CGFloat(height) / self.taskViewSize.height
-                                width = width / scale
-                                height = height / scale
-                            }
-                            break
-                        
-                        case .scaleFit:
-                            if self.taskViewSize.width < CGFloat(width) || self.taskViewSize.height < CGFloat(height) {
-                                let scale = CGFloat(width) / self.taskViewSize.width > CGFloat(height) / self.taskViewSize.height ? CGFloat(width) / self.taskViewSize.width : CGFloat(height) / self.taskViewSize.height
-                                width = width / scale
-                                height = height / scale
-                            }
-                            break
-                        
-                        case .scaleAdaption:
-                            width = self.taskViewSize.width
-                            height = self.taskViewSize.height
-                            break
-                    default:
-                        break
-                    }
-                }
-            let context : CGContext? = CGContext.init(data: nil, width: Int(width), height: Int(height), bitsPerComponent: 8, bytesPerRow: 0, space: CGColorSpace(name: CGColorSpace.sRGB)!, bitmapInfo: (!(cgImage.alphaInfo == .none || cgImage.alphaInfo == .noneSkipFirst || cgImage.alphaInfo == .noneSkipLast)) ? 2 : 6)
-            context?.concatenate(CGAffineTransform.identity);
-            context?.draw(cgImage, in: CGRect.init(x: 0, y: 0, width: width, height: height))
-            completion?(UIImage.init(cgImage: (context?.makeImage())!, scale: image.scale, orientation: image.imageOrientation))
-        }
-    }
+//    func decodedImage(image : UIImage, completion: ((_ image : UIImage?) ->())?) {
+//        autoreleasepool {
+//            let cgImage = image.cgImage!
+//            var width : CGFloat = CGFloat(cgImage.width)
+//            var height : CGFloat = CGFloat(cgImage.height)
+//
+//            if self.taskViewSize.width > 0 && self.taskViewSize.height > 0 {
+//                switch self.taskImageView?.scaleType {
+//                        case .scaleFill:
+//                            if self.taskViewSize.width < CGFloat(width) || self.taskViewSize.height < CGFloat(height) {
+//                                let scale = CGFloat(width) / self.taskViewSize.width < CGFloat(height) / self.taskViewSize.height ? CGFloat(width) / self.taskViewSize.width : CGFloat(height) / self.taskViewSize.height
+//                                width = width / scale
+//                                height = height / scale
+//                            }
+//                            break
+//
+//                        case .scaleFit:
+//                            if self.taskViewSize.width < CGFloat(width) || self.taskViewSize.height < CGFloat(height) {
+//                                let scale = CGFloat(width) / self.taskViewSize.width > CGFloat(height) / self.taskViewSize.height ? CGFloat(width) / self.taskViewSize.width : CGFloat(height) / self.taskViewSize.height
+//                                width = width / scale
+//                                height = height / scale
+//                            }
+//                            break
+//
+//                        case .scaleAdaption:
+//                            width = self.taskViewSize.width
+//                            height = self.taskViewSize.height
+//                            break
+//                    default:
+//                        break
+//                    }
+//                }
+//            let context : CGContext? = CGContext.init(data: nil, width: Int(width), height: Int(height), bitsPerComponent: 8, bytesPerRow: 0, space: CGColorSpace(name: CGColorSpace.sRGB)!, bitmapInfo: (!(cgImage.alphaInfo == .none || cgImage.alphaInfo == .noneSkipFirst || cgImage.alphaInfo == .noneSkipLast)) ? 2 : 6)
+//            context?.concatenate(CGAffineTransform.identity);
+//            context?.draw(cgImage, in: CGRect.init(x: 0, y: 0, width: width, height: height))
+//            completion?(UIImage.init(cgImage: (context?.makeImage())!, scale: image.scale, orientation: image.imageOrientation))
+//        }
+//    }
         
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         autoreleasepool {
@@ -128,12 +137,21 @@ extension DLDownloader {
                 }
             }
             if data?.getFileType() == .GIF {
+                let image = data?.getImages()
+                if let dataImage = image {
+                    DLMemoryCache.shareInstance().setObject(dataImage, forKey: self.taskImageView?.md5Key ?? "" + "\(self.taskImageView?.scaleType ?? .scaleOriginal)")
+                }
                 self.completionBlock?(data?.getImages())
             }else {
                 if let image = UIImage.init(contentsOfFile: self.filePath) {
-                    self.decodedImage(image: image) { (decodedImage)  in
-                        self.state = .finish
-                        self.completionBlock?(decodedImage)
+                    if let imageView = self.taskImageView {
+                        image.decodedImage(size: self.taskViewSize, scaleType: imageView.scaleType) { (decodedImage) in
+                            if let dataImage = decodedImage {
+                                DLMemoryCache.shareInstance().setObject(dataImage, forKey: self.taskImageView?.md5Key ?? "" + "\(self.taskImageView?.scaleType ?? .scaleOriginal)")
+                            }
+                            self.state = .finish
+                            self.completionBlock?(decodedImage)
+                        }
                     }
                 }
             }

@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIImage {
-    func decodedImage(size : CGSize, scaleType : DLImageScaleType) -> UIImage?{
+    func decodedImage(size : CGSize, scaleType : DLImageScaleType, completionBlock : ((_ image : UIImage?) ->())?){
         autoreleasepool {
             let cgImage = self.cgImage!
             var width : CGFloat = CGFloat(cgImage.width)
@@ -42,7 +42,8 @@ extension UIImage {
             let context : CGContext? = CGContext.init(data: nil, width: Int(width), height: Int(height), bitsPerComponent: 8, bytesPerRow: 0, space: CGColorSpace(name: CGColorSpace.sRGB)!, bitmapInfo: (!(cgImage.alphaInfo == .none || cgImage.alphaInfo == .noneSkipFirst || cgImage.alphaInfo == .noneSkipLast)) ? 2 : 6)
             context?.concatenate(CGAffineTransform.identity);
             context?.draw(cgImage, in: CGRect.init(x: 0, y: 0, width: width, height: height))
-            return UIImage.init(cgImage: (context?.makeImage())!, scale: self.scale, orientation: self.imageOrientation)
+//            return UIImage.init(cgImage: (context?.makeImage())!, scale: self.scale, orientation: self.imageOrientation)
+            completionBlock?(UIImage.init(cgImage: (context?.makeImage())!, scale: self.scale, orientation: self.imageOrientation))
         }
     }
 }

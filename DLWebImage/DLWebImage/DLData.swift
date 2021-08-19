@@ -56,31 +56,33 @@ extension NSData {
     }
     
     func getImages() -> UIImage? {
-        let options: NSDictionary = [kCGImageSourceShouldCache as String: NSNumber(value: true), kCGImageSourceTypeIdentifierHint as String: "DLGIF"]
-        guard let imageSource = CGImageSourceCreateWithData(self, options) else {
-            return nil
-        }
-        let frameCount = CGImageSourceGetCount(imageSource)
-        var images = [UIImage]()
-        var gifDuration = 0.0
-        for i in 0 ..< frameCount {
-            guard let imageRef = CGImageSourceCreateImageAtIndex(imageSource, i, options) else {
+        autoreleasepool {
+            let options: NSDictionary = [kCGImageSourceShouldCache as String: NSNumber(value: true), kCGImageSourceTypeIdentifierHint as String: "DLGIF"]
+            guard let imageSource = CGImageSourceCreateWithData(self, options) else {
                 return nil
             }
-            if frameCount == 1 {
-                gifDuration = Double.infinity
-            } else{
-                guard let properties = CGImageSourceCopyPropertiesAtIndex(imageSource, i, nil) , let gifInfo = (properties as NSDictionary)[kCGImagePropertyGIFDictionary as String] as? NSDictionary,
-                      let frameDuration = (gifInfo[kCGImagePropertyGIFDelayTime as String] as? NSNumber) else
-                {
+            let frameCount = CGImageSourceGetCount(imageSource)
+            var images = [UIImage]()
+            var gifDuration = 0.0
+            for i in 0 ..< frameCount {
+                guard let imageRef = CGImageSourceCreateImageAtIndex(imageSource, i, options) else {
                     return nil
                 }
-                gifDuration += frameDuration.doubleValue
-                let image = UIImage(cgImage: imageRef , scale: UIScreen.main.scale , orientation: UIImage.Orientation.up)
-                images.append(image)
+                if frameCount == 1 {
+                    gifDuration = Double.infinity
+                } else{
+                    guard let properties = CGImageSourceCopyPropertiesAtIndex(imageSource, i, nil) , let gifInfo = (properties as NSDictionary)[kCGImagePropertyGIFDictionary as String] as? NSDictionary,
+                          let frameDuration = (gifInfo[kCGImagePropertyGIFDelayTime as String] as? NSNumber) else
+                    {
+                        return nil
+                    }
+                    gifDuration += frameDuration.doubleValue
+                    let image = UIImage(cgImage: imageRef , scale: UIScreen.main.scale , orientation: UIImage.Orientation.up)
+                    images.append(image)
+                }
             }
+            return UIImage.animatedImage(with: images, duration: gifDuration)
         }
-        return UIImage.animatedImage(with: images, duration: gifDuration)
     }
     
 }

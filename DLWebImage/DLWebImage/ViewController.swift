@@ -16,8 +16,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell : DLTableViewCell = tableView.dequeueReusableCell(withIdentifier: "DLTableViewCell", for: indexPath) as! DLTableViewCell
-        let string = dataSource[indexPath.row]
-        cell.imageV.dl_setWebImage(url: string, placeholderImage: nil, failImage: UIImage.init(named: "liveSquare.png"), scaleType: .scaleAdaption)
+        let string = dataSource[indexPath.row]        
+        cell.imageV.dl_webImage.url(url: string).failImage(failImage: UIImage.init(named: "liveSquare.png")).scaleType(scaleType: .scaleAdaption).state(state: .highlighted).resume()
         return cell
     }
         
@@ -32,6 +32,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.delegate = self
         tableView.dataSource = self
         tableView.reloadData()
+        UIButton.init().setTitle("", for: .normal)
     }
     
     var gifUrl = "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Ff.mgame.netease.com%2Fforum%2F201509%2F21%2F171337o26avxzpb6wpowza.gif&refer=http%3A%2F%2Ff.mgame.netease.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1631692465&t=a52a9396edae2a90eb8d697c7aedece3"
