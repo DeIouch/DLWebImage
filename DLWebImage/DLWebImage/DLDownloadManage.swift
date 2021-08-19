@@ -112,7 +112,7 @@ class DLDownloadManage: NSObject {
     }
     
     func searchCacheImage(task : DLDownloadTask) -> Bool {
-        if let image = DLMemoryCache.shareInstance().object(forKey: task.cacheKey) {
+        if let image = DLImageCache.shareInstance().object(forKey: task.cacheKey) {
             task.spinner?.stopAnimating()
             setViewImage(view: task.taskView, image: image, state: task.state)
             return true

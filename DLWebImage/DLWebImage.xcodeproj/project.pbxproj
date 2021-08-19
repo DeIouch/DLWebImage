@@ -18,7 +18,7 @@
 		26701AE526CD205C004424B5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701AD726CD205C004424B5 /* AppDelegate.swift */; };
 		26701AE626CD205C004424B5 /* DLDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701AD826CD205C004424B5 /* DLDownloader.swift */; };
 		26701AE726CD205C004424B5 /* DLWebImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701AD926CD205C004424B5 /* DLWebImageView.swift */; };
-		26701AE826CD205C004424B5 /* DLMemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701ADA26CD205C004424B5 /* DLMemoryCache.swift */; };
+		26701AE826CD205C004424B5 /* DLImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701ADA26CD205C004424B5 /* DLImageCache.swift */; };
 		26701AEA26CD205C004424B5 /* DLImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701ADC26CD205C004424B5 /* DLImage.swift */; };
 		26701AEB26CD205C004424B5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701ADD26CD205C004424B5 /* SceneDelegate.swift */; };
 		26701AED26CD205C004424B5 /* DLString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701ADF26CD205C004424B5 /* DLString.swift */; };
@@ -63,7 +63,7 @@
 		26701AD726CD205C004424B5 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		26701AD826CD205C004424B5 /* DLDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DLDownloader.swift; path = ../../../DLWebImage/DLWebImage/DLWebImage/DLDownloader.swift; sourceTree = "<group>"; };
 		26701AD926CD205C004424B5 /* DLWebImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLWebImageView.swift; sourceTree = "<group>"; };
-		26701ADA26CD205C004424B5 /* DLMemoryCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLMemoryCache.swift; sourceTree = "<group>"; };
+		26701ADA26CD205C004424B5 /* DLImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLImageCache.swift; sourceTree = "<group>"; };
 		26701ADC26CD205C004424B5 /* DLImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLImage.swift; sourceTree = "<group>"; };
 		26701ADD26CD205C004424B5 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		26701ADF26CD205C004424B5 /* DLString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLString.swift; sourceTree = "<group>"; };
@@ -127,7 +127,7 @@
 				26701AD526CD205C004424B5 /* DLDownloadManage.swift */,
 				26701AD826CD205C004424B5 /* DLDownloader.swift */,
 				26701ADC26CD205C004424B5 /* DLImage.swift */,
-				26701ADA26CD205C004424B5 /* DLMemoryCache.swift */,
+				26701ADA26CD205C004424B5 /* DLImageCache.swift */,
 				26701ADF26CD205C004424B5 /* DLString.swift */,
 				26701AD926CD205C004424B5 /* DLWebImageView.swift */,
 				26F1862A26CE40B400F8B566 /* DLDownloadTask.swift */,
@@ -303,7 +303,7 @@
 				26701AEE26CD205C004424B5 /* ViewController.swift in Sources */,
 				26701AEF26CD205C004424B5 /* DLTableViewCell.swift in Sources */,
 				26701AE626CD205C004424B5 /* DLDownloader.swift in Sources */,
-				26701AE826CD205C004424B5 /* DLMemoryCache.swift in Sources */,
+				26701AE826CD205C004424B5 /* DLImageCache.swift in Sources */,
 				26701AEA26CD205C004424B5 /* DLImage.swift in Sources */,
 				26701AE226CD205C004424B5 /* ImageLoader.swift in Sources */,
 			);

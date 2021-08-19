@@ -7,15 +7,15 @@
 
 import UIKit
 
-class DLMemoryCache: NSObject {
+class DLImageCache: NSObject {
     
-    private static let dl_memoryCache = DLMemoryCache.init()
+    private static let dl_memoryCache = DLImageCache.init()
         
     private var cache : NSCache = NSCache<NSString, UIImage>.init()
         
-    let filePath = (NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory, FileManager.SearchPathDomainMask.userDomainMask, true).last! as String) + "/"
+    private let filePath = (NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory, FileManager.SearchPathDomainMask.userDomainMask, true).last! as String) + "/"
     
-    public static func shareInstance() -> DLMemoryCache {
+    public static func shareInstance() -> DLImageCache {
         return dl_memoryCache
     }
     
