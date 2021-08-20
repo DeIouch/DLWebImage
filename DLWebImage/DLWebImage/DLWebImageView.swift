@@ -1,10 +1,3 @@
-//
-//  DLDownloadTask.swift
-//  DLWebImage
-//
-//  Created by qing on 2021/8/19.
-//
-
 import UIKit
 
 enum DLImageScaleType : Int {

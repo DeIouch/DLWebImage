@@ -1,10 +1,3 @@
-//
-//  AppDelegate.swift
-//  DLWebImage
-//
-//  Created by qing on 2021/8/11.
-//
-
 import UIKit
 
 @main

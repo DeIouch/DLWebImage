@@ -1,10 +1,3 @@
-//
-//  DLImage.swift
-//  DLWebImage
-//
-//  Created by qing on 2021/8/18.
-//
-
 import UIKit
 
 extension UIImage {

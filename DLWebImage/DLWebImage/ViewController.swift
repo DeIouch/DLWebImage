@@ -1,19 +1,3 @@
-//import UIKit
-//
-//class ContentViewController: UIViewController {
-//
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//    }
-//
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        self.present(ViewController.init(), animated: true, completion: nil)
-//    }
-//
-//}
-
-
-
 import UIKit
 
 let cellHeight : CGFloat = 200
@@ -46,7 +30,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.delegate = self
         tableView.dataSource = self
         tableView.reloadData()
-        UIButton.init().setTitle("", for: .normal)
+//        UIButton.init().setTitle("", for: .normal)
     }
 
 }

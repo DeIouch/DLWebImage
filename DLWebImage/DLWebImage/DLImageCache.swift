@@ -1,10 +1,3 @@
-//
-//  DLMemoryCache.swift
-//  DLWebImage
-//
-//  Created by qing on 2021/8/18.
-//
-
 import UIKit
 
 class DLImageCache: NSObject {
@@ -13,14 +6,57 @@ class DLImageCache: NSObject {
         
     private var cache : NSCache = NSCache<NSString, UIImage>.init()
         
-    private let filePath = (NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory, FileManager.SearchPathDomainMask.userDomainMask, true).last! as String) + "/"
+    private let filePath = (NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory, FileManager.SearchPathDomainMask.userDomainMask, true).last! as String) + "/dl_cache/"
+    
+    private let fileManager = FileManager.init()
     
     public static func shareInstance() -> DLImageCache {
         return dl_memoryCache
     }
     
+    override init() {
+        super.init()
+        if fileManager.fileExists(atPath: filePath) == false {
+            do {
+                try fileManager.createDirectory(atPath: filePath, withIntermediateDirectories: true, attributes: nil)
+            } catch  {
+                
+            }
+        }
+    }
+    
+    func removeOldFile(second : Int) {
+        let timeInterval: TimeInterval = Date.init().timeIntervalSince1970
+        let millisecond = Int(timeInterval)
+        let files : [String] = fileManager.subpaths(atPath: filePath) ?? []
+        for file in files {
+            var info : Dictionary<FileAttributeKey, Any>?
+            do {
+                try info = fileManager.attributesOfItem(atPath: filePath + file)
+            } catch  {
+                
+            }
+            if let fileInfo = info {
+                let createDate = String(describing: fileInfo[FileAttributeKey.init("NSFileCreationDate")])
+                if millisecond > createDate.substring(start: 9, 28).timeStrChangeTotimeInterval() + second {
+                    print(filePath + file)
+                    do {
+                        try FileManager.default.removeItem(atPath: filePath + file)
+                    } catch  {
+                        
+                    }
+                }
+            }
+        }
+    }
+    
+    func setMemoryCache(countLimit : Int, totalCostLimit : Int) {
+        cache.countLimit = countLimit
+        cache.totalCostLimit = totalCostLimit
+    }
+    
     func fileExists(path : String) -> Bool {
-        return FileManager.default.fileExists(atPath: filePath + path.md5())
+        return fileManager.fileExists(atPath: filePath + path.md5())
     }
     
     func saveFileToCache(url : String, scaleType : DLImageScaleType, size : CGSize, completionBlock : ((_ image : UIImage?) ->())?) {
