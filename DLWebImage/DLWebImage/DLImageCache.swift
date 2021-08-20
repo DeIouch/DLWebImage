@@ -19,16 +19,6 @@ class DLImageCache: NSObject {
         return dl_memoryCache
     }
     
-    func saveObjectToFile(location : URL, url : String) {
-        if FileManager.default.fileExists(atPath: filePath + url.md5()) == false {
-            do {
-                try FileManager.default.moveItem(at: location, to: URL.init(string: filePath + url.md5())!)
-            } catch {
-
-            }
-        }
-    }
-    
     func fileExists(path : String) -> Bool {
         return FileManager.default.fileExists(atPath: filePath + path.md5())
     }
@@ -40,13 +30,14 @@ class DLImageCache: NSObject {
         }
         DispatchQueue.global().async {
             let data : NSData? = NSData.init(contentsOfFile: self.getFilePath(url: url))
-            if data?.getFileType() == .GIF {
+            let imageType = data?.getImageType()
+            if imageType == .gif {
                 let image = data?.getImages()
                 if let dataImage = image {
                     self.setObject(dataImage, forKey: (url + "\(scaleType)").md5())
                 }
-                completionBlock?(data?.getImages())
-            }else {
+                completionBlock?(image)
+            }else if imageType != .unknown {
                 if let image = UIImage.init(contentsOfFile: self.getFilePath(url: url)) {
                     image.decodedImage(size: size, scaleType: scaleType) { (decodedImage) in
                         if let dataImage = decodedImage {
@@ -55,6 +46,8 @@ class DLImageCache: NSObject {
                         completionBlock?(decodedImage)
                     }
                 }
+            }else {
+                completionBlock?(nil)
             }
         }
     }
