@@ -17,22 +17,42 @@ class DLDownloadManage: NSObject {
     
     override init() {
         super.init()
-        taskCount = getDeviceCpuCount() * 2
+//        taskCount = getDeviceCpuCount() * 2
+        taskCount = 1
     }
     
-    private func taskRun() {
+    
+    private func findTask() -> Int {
+        objc_sync_exit(taskArray)
+        var index = taskArray.count - 1
+        for i in 0...taskArray.count - 1 {
+            let taskView = taskArray[index - i]
+            if taskView.view?.displayedInScreen() == true {
+                index = taskArray.count - 1 - i
+                break
+            }
+        }
+        objc_sync_enter(taskArray)
+        return index
+    }
+    func taskRun() {
         autoreleasepool {
-            let task = taskArray.first!
+            let index = findTask()
+            let task = taskArray[index]
             guard searchCacheImage(task: task) == false else {
-                taskArray.removeFirst()
+                objc_sync_exit(taskArray)
+                taskArray.remove(at: index)
+                objc_sync_enter(taskArray)
                 if self.taskArray.count > 0 {
                     self.taskRun()
                 }
                 return
             }
             guard searchRepetitiveDownload(task: task) == false else {
-                taskArray.removeFirst()
+                objc_sync_exit(taskArray)
+                taskArray.remove(at: index)
                 taskArray.append(task)
+                objc_sync_enter(taskArray)
                 return
             }
             if downloadArray.count <= taskCount {
@@ -42,7 +62,9 @@ class DLDownloadManage: NSObject {
                 downloadArray.append(download)
             }
             if let download = searchFreeDownload() {
-                taskArray.removeFirst()
+                objc_sync_exit(taskArray)
+                taskArray.remove(at: index)
+                objc_sync_enter(taskArray)
                 download.download(url: task.url, scaleType: task.scaleType, size: task.size, progressBlock: task.progressBlock) { (image) in
                     download.taskViewSize = .zero
                     download.state = .finish
@@ -119,7 +141,9 @@ class DLDownloadManage: NSObject {
         guard searchCacheImage(task: task) == false else {
             return
         }
+        objc_sync_exit(taskArray)
         taskArray.append(task)
+        objc_sync_enter(taskArray)
         setViewImage(view: task.view, image: task.placeholderImage, state: task.state)
         if downloadArray.count <= 4 || searchFreeDownload() != nil{
             taskRun()

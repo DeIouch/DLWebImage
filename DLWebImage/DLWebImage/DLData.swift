@@ -1,58 +1,40 @@
-//
-//  DLData.swift
-//  DLWebImage
-//
-//  Created by qing on 2021/8/16.
-//
-
 import UIKit
 
-enum DLFileType : Int {
-    case Unknown, JPG, BMP, PNG, SWF, EXE, RAR, ZIP, XML, HTML, ASPX, CS, JS, TXT, SQL, GIF
-}
+enum DLImageType {
+        case unknown
+        case jpeg
+        case tiff
+        case bmp
+        case ico
+        case icns
+        case gif
+        case png
+        case webp
+    }
 
 extension NSData {
-    func getFileType() -> DLFileType {
-        var type : DLFileType = .Unknown
-        var char1 : Int = 0
-        var char2 : Int = 0
-        getBytes(&char1, range: NSRange.init(location: 0, length: 1))
-        getBytes(&char2, range: NSRange.init(location: 1, length: 1))
-        switch "\(char1)"+"\(char2)" {
-        case "255216":
-            type = .JPG
-        case "6677":
-            type = .BMP
-        case "13780":
-            type = .PNG
-        case "6787":
-            type = .SWF
-        case "7790":
-            type = .EXE
-        case "8297":
-            type = .RAR
-        case "8075":
-            type = .ZIP
-        case "6063":
-            type = .XML
-        case "6033":
-            type = .HTML
-        case "239187":
-            type = .ASPX
-        case "117115":
-            type = .CS
-        case "119105":
-            type = .JS
-        case "102100":
-            type = .TXT
-        case "255254":
-            type = .SQL
-        case "7173":
-            type = .GIF
+
+    func getImageType() -> DLImageType {
+        var char : UInt8 = 0
+        getBytes(&char, range: NSRange.init(location: 0, length: 1))
+        switch char {
+        case 0xFF:
+            return .jpeg
+        case 0x4D, 0x49:
+            return .tiff
+        case 0x00:
+            return .ico
+        case 0x69:
+            return .icns
+        case 0x47:
+            return .gif
+        case 0x89:
+            return .png
+        case 0x42:
+            return .bmp
         default:
-            type = .Unknown
+            return .unknown
         }
-        return type
     }
     
     func getImages() -> UIImage? {
@@ -62,6 +44,9 @@ extension NSData {
                 return nil
             }
             let frameCount = CGImageSourceGetCount(imageSource)
+            if frameCount == 0 {
+                return nil
+            }
             var images = [UIImage]()
             var gifDuration = 0.0
             for i in 0 ..< frameCount {
@@ -77,8 +62,10 @@ extension NSData {
                         return nil
                     }
                     gifDuration += frameDuration.doubleValue
-                    let image = UIImage(cgImage: imageRef , scale: UIScreen.main.scale , orientation: UIImage.Orientation.up)
-                    images.append(image)
+                    let context : CGContext? = CGContext.init(data: nil, width: imageRef.width, height: imageRef.height, bitsPerComponent: 8, bytesPerRow: 0, space: CGColorSpace(name: CGColorSpace.sRGB)!, bitmapInfo: (!(imageRef.alphaInfo == .none || imageRef.alphaInfo == .noneSkipFirst || imageRef.alphaInfo == .noneSkipLast)) ? 2 : 6)
+                    context?.concatenate(CGAffineTransform.identity);
+                    context?.draw(imageRef, in: CGRect.init(x: 0, y: 0, width: imageRef.width, height: imageRef.height))
+                    images.append(UIImage.init(cgImage: (context?.makeImage())!))
                 }
             }
             return UIImage.animatedImage(with: images, duration: gifDuration)
