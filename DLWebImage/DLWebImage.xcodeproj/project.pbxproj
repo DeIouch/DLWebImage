@@ -15,7 +15,6 @@
 		26701AE226CD205C004424B5 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701AD426CD205C004424B5 /* ImageLoader.swift */; };
 		26701AE326CD205C004424B5 /* DLDownloadManage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701AD526CD205C004424B5 /* DLDownloadManage.swift */; };
 		26701AE526CD205C004424B5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701AD726CD205C004424B5 /* AppDelegate.swift */; };
-		26701AE626CD205C004424B5 /* DLDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701AD826CD205C004424B5 /* DLDownloader.swift */; };
 		26701AE826CD205C004424B5 /* DLImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701ADA26CD205C004424B5 /* DLImageCache.swift */; };
 		26701AEA26CD205C004424B5 /* DLImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701ADC26CD205C004424B5 /* DLImage.swift */; };
 		26701AEB26CD205C004424B5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701ADD26CD205C004424B5 /* SceneDelegate.swift */; };
@@ -24,6 +23,7 @@
 		26701AEF26CD205C004424B5 /* DLTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26701AE126CD205C004424B5 /* DLTableViewCell.swift */; };
 		269212B626D343DD00FBDF00 /* DLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269212B526D343DD00FBDF00 /* DLView.swift */; };
 		269212C726D3733500FBDF00 /* DLData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269212C626D372FF00FBDF00 /* DLData.swift */; };
+		269212C926D3737D00FBDF00 /* DLDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269212C826D3737D00FBDF00 /* DLDownloader.swift */; };
 		26C4C79626C6763E00938490 /* liveSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 26C4C79526C6763E00938490 /* liveSquare.png */; };
 		26F1862B26CE40B400F8B566 /* DLWebImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F1862A26CE40B400F8B566 /* DLWebImage.swift */; };
 /* End PBXBuildFile section */
@@ -60,7 +60,6 @@
 		26701AD426CD205C004424B5 /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		26701AD526CD205C004424B5 /* DLDownloadManage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLDownloadManage.swift; sourceTree = "<group>"; };
 		26701AD726CD205C004424B5 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		26701AD826CD205C004424B5 /* DLDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DLDownloader.swift; path = ../../../DLWebImage/DLWebImage/DLWebImage/DLDownloader.swift; sourceTree = "<group>"; };
 		26701ADA26CD205C004424B5 /* DLImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLImageCache.swift; sourceTree = "<group>"; };
 		26701ADC26CD205C004424B5 /* DLImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLImage.swift; sourceTree = "<group>"; };
 		26701ADD26CD205C004424B5 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -69,6 +68,7 @@
 		26701AE126CD205C004424B5 /* DLTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLTableViewCell.swift; sourceTree = "<group>"; };
 		269212B526D343DD00FBDF00 /* DLView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLView.swift; sourceTree = "<group>"; };
 		269212C626D372FF00FBDF00 /* DLData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DLData.swift; sourceTree = "<group>"; };
+		269212C826D3737D00FBDF00 /* DLDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DLDownloader.swift; sourceTree = "<group>"; };
 		26C4C79526C6763E00938490 /* liveSquare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = liveSquare.png; sourceTree = "<group>"; };
 		26F1862A26CE40B400F8B566 /* DLWebImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DLWebImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -123,18 +123,10 @@
 			children = (
 				26701AD726CD205C004424B5 /* AppDelegate.swift */,
 				26701AE026CD205C004424B5 /* ViewController.swift */,
-				269212C526D372E900FBDF00 /* DLWebImage */,
-				26701AD826CD205C004424B5 /* DLDownloader.swift */,
-				269212C626D372FF00FBDF00 /* DLData.swift */,
-				26701AD526CD205C004424B5 /* DLDownloadManage.swift */,
-				26701ADC26CD205C004424B5 /* DLImage.swift */,
-				26701ADA26CD205C004424B5 /* DLImageCache.swift */,
-				269212B526D343DD00FBDF00 /* DLView.swift */,
-				26701ADF26CD205C004424B5 /* DLString.swift */,
-				26F1862A26CE40B400F8B566 /* DLWebImage.swift */,
 				26701AD426CD205C004424B5 /* ImageLoader.swift */,
 				26701ADD26CD205C004424B5 /* SceneDelegate.swift */,
 				26701AE126CD205C004424B5 /* DLTableViewCell.swift */,
+				269212C526D372E900FBDF00 /* DLWebImage */,
 				26C4C79526C6763E00938490 /* liveSquare.png */,
 				2619A9B926C364FA00F8D798 /* Main.storyboard */,
 				2619A9BC26C364FB00F8D798 /* Assets.xcassets */,
@@ -165,6 +157,14 @@
 		269212C526D372E900FBDF00 /* DLWebImage */ = {
 			isa = PBXGroup;
 			children = (
+				26F1862A26CE40B400F8B566 /* DLWebImage.swift */,
+				26701AD526CD205C004424B5 /* DLDownloadManage.swift */,
+				26701ADA26CD205C004424B5 /* DLImageCache.swift */,
+				269212C826D3737D00FBDF00 /* DLDownloader.swift */,
+				269212C626D372FF00FBDF00 /* DLData.swift */,
+				26701ADC26CD205C004424B5 /* DLImage.swift */,
+				269212B526D343DD00FBDF00 /* DLView.swift */,
+				26701ADF26CD205C004424B5 /* DLString.swift */,
 			);
 			path = DLWebImage;
 			sourceTree = "<group>";
@@ -309,8 +309,8 @@
 				26701AEE26CD205C004424B5 /* ViewController.swift in Sources */,
 				269212C726D3733500FBDF00 /* DLData.swift in Sources */,
 				26701AEF26CD205C004424B5 /* DLTableViewCell.swift in Sources */,
-				26701AE626CD205C004424B5 /* DLDownloader.swift in Sources */,
 				269212B626D343DD00FBDF00 /* DLView.swift in Sources */,
+				269212C926D3737D00FBDF00 /* DLDownloader.swift in Sources */,
 				26701AE826CD205C004424B5 /* DLImageCache.swift in Sources */,
 				26701AEA26CD205C004424B5 /* DLImage.swift in Sources */,
 				26701AE226CD205C004424B5 /* ImageLoader.swift in Sources */,

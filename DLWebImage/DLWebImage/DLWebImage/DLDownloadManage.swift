@@ -17,8 +17,7 @@ class DLDownloadManage: NSObject {
     
     override init() {
         super.init()
-//        taskCount = getDeviceCpuCount() * 2
-        taskCount = 1
+        taskCount = getDeviceCpuCount() * 2
     }
     
     
