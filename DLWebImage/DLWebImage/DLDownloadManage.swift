@@ -5,7 +5,7 @@ class DLDownloadManage: NSObject {
                 
     private static let downloadManage = DLDownloadManage.init()
         
-    private var taskArray : [DLWebImageView] = []
+    private var taskArray : [DLWebImage] = []
     
     private var downloadArray : [DLDownloader] = []
     
@@ -49,7 +49,7 @@ class DLDownloadManage: NSObject {
                     self.downloadArray[download.index] = download
                     DispatchQueue.main.async {[weak self] in
                         task.spinner?.stopAnimating()
-                        if let decodeImage = DLImageCache.shareInstance().object(forKey: task.cacheKey) {
+                        if let decodeImage = DLImageCache.shareInstance().object(forKey: task.view?.cacheKey ?? "") {
                             self?.setViewImage(view: task.view, image: decodeImage, state: task.state)
                         }
                         if self?.taskArray.count ?? 0 > 0 {
@@ -84,7 +84,7 @@ class DLDownloadManage: NSObject {
         return Int(ncpu)
     }
         
-    private func setViewImage(view : UIView?, image : UIImage, state : UIControl.State) {
+    private func setViewImage(view : UIView?, image : UIImage?, state : UIControl.State) {
         if view is UIImageView {
             if let imageView : UIImageView = view as? UIImageView {
                 imageView.image = image
@@ -94,7 +94,7 @@ class DLDownloadManage: NSObject {
                 btn.setImage(image, for: state)
             }
         }else {
-            view?.backgroundColor = UIColor.init(patternImage: image)
+            view?.backgroundColor = UIColor.init(patternImage: image ?? UIImage.init())
         }
     }
     
@@ -109,9 +109,10 @@ class DLDownloadManage: NSObject {
         return download
     }
     
-    func addTask(task : DLWebImageView) {
+    func addTask(task : DLWebImage) {
         if task.url.count == 0 {
-            setViewImage(view: task.view, image: task.failImage ?? UIImage.init(), state: task.state)
+            setViewImage(view: task.view, image: task.failImage, state: task.state)
+            task.spinner?.stopAnimating()
             task.failBlock?()
             return
         }
@@ -119,12 +120,13 @@ class DLDownloadManage: NSObject {
             return
         }
         taskArray.append(task)
+        setViewImage(view: task.view, image: task.placeholderImage, state: task.state)
         if downloadArray.count <= 4 || searchFreeDownload() != nil{
             taskRun()
         }
     }
     
-    private func searchRepetitiveDownload(task : DLWebImageView) -> Bool {
+    private func searchRepetitiveDownload(task : DLWebImage) -> Bool {
         for download in downloadArray {
             if download.urlStr == task.url {
                 return true
@@ -133,8 +135,8 @@ class DLDownloadManage: NSObject {
         return false
     }
     
-    private func searchCacheImage(task : DLWebImageView) -> Bool {
-        if let image = DLImageCache.shareInstance().object(forKey: task.cacheKey) {
+    private func searchCacheImage(task : DLWebImage) -> Bool {
+        if let image = DLImageCache.shareInstance().object(forKey: task.view?.cacheKey ?? "") {
             task.spinner?.stopAnimating()
             setViewImage(view: task.view, image: image, state: task.state)
             return true

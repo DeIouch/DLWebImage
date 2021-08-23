@@ -7,7 +7,7 @@ enum DLImageScaleType : Int {
     case scaleAdaption        //  自适应（缩放为imageView大小）
 }
 
-class DLWebImageView: NSObject {
+class DLWebImage: NSObject {
     
     private(set) var view : UIView?
     
@@ -17,6 +17,8 @@ class DLWebImageView: NSObject {
     
     private(set) var failImage : UIImage?
     
+    private(set) var placeholderImage : UIImage?
+    
     private(set) var size : CGSize = .zero
     
     private(set) var md5Key : String = ""
@@ -24,9 +26,7 @@ class DLWebImageView: NSObject {
     private(set) var cacheKey : String = ""
     
     private(set) var state : UIControl.State = .normal
-    
-    private(set) var showLoading : Bool = false
-    
+        
     private(set) var spinner : UIActivityIndicatorView?
     
     private(set) var progressBlock : ((_ progress : Float) ->())?
@@ -34,12 +34,13 @@ class DLWebImageView: NSObject {
     private(set) var completionBlock : ((_ image : UIImage?) ->())?
     
     private(set) var failBlock : (() ->())?
-    
+        
     func resume() {
         self.md5Key = self.url.md5()
         self.cacheKey = (self.url + "\(self.scaleType)").md5()
+        self.view?.cacheKey = (self.url + "\(self.scaleType)").md5()
         self.size = self.view?.frame.size ?? .zero
-        if showLoading == true {
+        if self.placeholderImage == nil {
             spinner = UIActivityIndicatorView.init(style: .large)
             spinner?.startAnimating()
             spinner?.center = CGPoint.init(x: self.size.width * 0.5, y: self.size.height * 0.5)
@@ -49,48 +50,48 @@ class DLWebImageView: NSObject {
         DLDownloadManage.shareInstance().addTask(task: self)
     }
     
-    func url(url : String) -> DLWebImageView {
+    func url(_ url : String) -> DLWebImage {
         self.url = url
         return self
     }
     
-    func showLoading(showLoading : Bool) -> DLWebImageView {
-        self.showLoading = showLoading
-        return self
-    }
-    
-    func scaleType(scaleType : DLImageScaleType) -> DLWebImageView {
+    func scaleType(_ scaleType : DLImageScaleType) -> DLWebImage {
         self.scaleType = scaleType
         return self
     }
     
-    func failImage(failImage : UIImage?) -> DLWebImageView {
+    func failImage(_ failImage : UIImage?) -> DLWebImage {
         self.failImage = failImage
         return self
     }
     
-    func state(state : UIControl.State) -> DLWebImageView {
+    func placeholderImage(_ placeholderImage : UIImage?) -> DLWebImage {
+        self.placeholderImage = placeholderImage
+        return self
+    }
+    
+    func state(_ state : UIControl.State) -> DLWebImage {
         self.state = state
         return self
     }
     
-    func progressBlock(progressBlock : ((_ progress : Float) ->())?) -> DLWebImageView {
+    func progressBlock(_ progressBlock : ((_ progress : Float) ->())?) -> DLWebImage {
         self.progressBlock = progressBlock
         return self
     }
     
-    func completionBlock(completionBlock : ((_ image : UIImage?) ->())?) -> DLWebImageView {
+    func completionBlock(_ completionBlock : ((_ image : UIImage?) ->())?) -> DLWebImage {
         self.completionBlock = completionBlock
         return self
     }
     
-    func failBlock(failBlock : (() ->())?) -> DLWebImageView {
+    func failBlock(_ failBlock : (() ->())?) -> DLWebImage {
         self.failBlock = failBlock
         return self
     }
     
-    class func setWebImage(view : UIView) -> DLWebImageView {
-        let task = DLWebImageView.init()
+    class func webImage(_ view : UIView?) -> DLWebImage {
+        let task = DLWebImage.init()
         task.view = view
         return task
     }

@@ -9,7 +9,7 @@ extension String {
         return uint8Array.reduce("") { $0 + String(format: "%02X", $1)}
     }
     
-    func timeStrChangeTotimeInterval(_ dateFormat:String? = "yyyy-MM-dd HH:mm:ss") -> Int {
+    func timeStrToTimeInterval(_ dateFormat:String? = "yyyy-MM-dd HH:mm:ss") -> Int {
         if self.isEmpty {
             return 0
         }

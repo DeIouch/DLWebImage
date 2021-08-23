@@ -26,8 +26,7 @@ class DLImageCache: NSObject {
     }
     
     func removeOldFile(second : Int) {
-        let timeInterval: TimeInterval = Date.init().timeIntervalSince1970
-        let millisecond = Int(timeInterval)
+        let millisecond = Int(Date.init().timeIntervalSince1970)
         let files : [String] = fileManager.subpaths(atPath: filePath) ?? []
         for file in files {
             var info : Dictionary<FileAttributeKey, Any>?
@@ -38,8 +37,7 @@ class DLImageCache: NSObject {
             }
             if let fileInfo = info {
                 let createDate = String(describing: fileInfo[FileAttributeKey.init("NSFileCreationDate")])
-                if millisecond > createDate.substring(start: 9, 28).timeStrChangeTotimeInterval() + second {
-                    print(filePath + file)
+                if millisecond > createDate.substring(start: 9, 28).timeStrToTimeInterval() + second {
                     do {
                         try FileManager.default.removeItem(atPath: filePath + file)
                     } catch  {
