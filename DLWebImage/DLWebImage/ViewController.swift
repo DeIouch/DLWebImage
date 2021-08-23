@@ -11,7 +11,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell : DLTableViewCell = tableView.dequeueReusableCell(withIdentifier: "DLTableViewCell", for: indexPath) as! DLTableViewCell
         let string = ImageLoader.gifImages[indexPath.row]
-        DLWebImage.webImage(cell.imageV).url(string).failImage(UIImage.init(named: "liveSquare.png")).scaleType(.scaleOriginal).state(.highlighted).failBlock {
+        DLWebImage.webImage(cell.imageV).url(string).failImage(UIImage.init(named: "liveSquare.png")).scaleType(.scaleOriginal).state(.normal).failBlock {
             
         }.completionBlock({ (image) in
             
